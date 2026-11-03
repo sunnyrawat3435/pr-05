@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EduSphere AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f2fb;--surface:#fff;--ink:#241838;--muted:#6b5f80;--brand:#5b2d99;--soft:#e7dcf6;--line:#d9cdeb;--warn:#b4472b;--ok:#2f7d57;--amber:#9a6a00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17102a;--surface:#221a38;--ink:#efe9fa;--muted:#a99dc2;--brand:#b99af0;--soft:#32265a;--line:#3d3163;--warn:#ff9a7d;--ok:#6fd0a0;--amber:#f0c25a}}
+:root[data-theme="dark"]{--bg:#17102a;--surface:#221a38;--ink:#efe9fa;--muted:#a99dc2;--brand:#b99af0;--soft:#32265a;--line:#3d3163;--warn:#ff9a7d;--ok:#6fd0a0;--amber:#f0c25a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Newsreader,Georgia,serif;margin:0;line-height:1.15}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+header{padding:28px 0 8px}
+header h1{font-size:2.3rem;color:var(--brand)}
+header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:inherit;font-weight:500;color:var(--muted);cursor:pointer}
+nav button[aria-selected=true]{color:var(--brand);border-color:var(--brand)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+section[hidden]{display:none}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+label{display:block;font-weight:500;margin:12px 0 4px;font-size:.92rem}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.btn{background:var(--brand);color:var(--bg);border:0;border-radius:6px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer;margin-top:14px}
+.btn.alt{background:var(--soft);color:var(--brand)}
+:root:not([data-theme="dark"]) .btn{color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:4px 12px;font:inherit;font-size:.88rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:#fff}
+.tag{display:inline-block;background:var(--soft);color:var(--brand);border-radius:4px;padding:1px 8px;font-size:.8rem;margin-right:4px}
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+.tw{overflow-x:auto}
+.bar{height:8px;background:var(--soft);border-radius:4px;min-width:70px}.bar i{display:block;height:100%;border-radius:4px;background:var(--brand)}
+.risk-high{color:var(--warn);font-weight:700}.risk-med{color:var(--amber);font-weight:700}.risk-low{color:var(--ok);font-weight:700}
+.muted{color:var(--muted)}.item{border-top:1px solid var(--line);padding:12px 0}.item:first-child{border-top:0}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.stat{font-family:Newsreader,serif;font-size:2rem;color:var(--brand)}
+footer{padding:20px 0 40px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>EduSphere AI</h1>
+<p>A classroom companion that looks at learning progress, builds balanced teams, suggests opportunities and lets students ask doubts anonymously.</p>
+</header>
+<nav role="tablist" id="tabs">
+<button role="tab" aria-selected="true" data-t="student">For students</button>
+<button role="tab" aria-selected="false" data-t="ask">Ask anonymously</button>
+<button role="tab" aria-selected="false" data-t="teacher">Teacher insights</button>
+<button role="tab" aria-selected="false" data-t="teams">Team builder</button>
+</nav>
+
+<section id="student">
+<div class="grid">
+<div class="panel">
+<h2>Your profile</h2>
+<label for="sname">Name</label><input id="sname" value="Aarav">
+<label>Interests</label><div class="chips" id="interests"></div>
+<label for="weak">Subject you find hardest</label>
+<select id="weak"><option>Mathematics</option><option>Science</option><option>English</option><option>Social Science</option><option>Computer Science</option></select>
+<label for="hours">Study hours per day: <b id="hv">2</b></label>
+<input type="range" id="hours" min="1" max="6" value="2">
+<button class="btn" id="go">Get my recommendations</button>
+</div>
+<div class="panel" id="sout"><h2>Your plan</h2><p class="muted">Pick interests and select “Get my recommendations”.</p></div>
+</div>
+</section>
+
+<section id="ask" hidden>
+<div class="grid">
+<div class="panel">
+<h2>Ask without your name</h2>
+<p class="muted">Nothing here stores who you are. Your teacher sees only the question.</p>
+<label for="q">Your doubt or feedback</label>
+<textarea id="q" rows="5" placeholder="e.g. I didn’t understand how to balance chemical equations."></textarea>
+<button class="btn" id="post">Post anonymously</button>
+<p id="pmsg" class="muted" role="status"></p>
+</div>
+<div class="panel"><h2>Class questions</h2><div id="qlist"></div></div>
+</div>
+</section>
+
+<section id="teacher" hidden>
+<div class="panel row">
+<div><div class="stat" id="kAtt">–</div><div class="muted">Average attendance</div></div>
+<div><div class="stat" id="kEng">–</div><div class="muted">Average engagement</div></div>
+<div><div class="stat" id="kRisk">–</div><div class="muted">Students needing support</div></div>
+</div>
+<div class="panel">
+<h2>Class overview</h2>
+<p class="muted">Risk combines attendance, recent marks, engagement and assignment completion. Select a number to edit it.</p>
+<div class="tw"><table id="roster"></table></div>
+<div class="row" style="justify-content:flex-start"><input id="nn" placeholder="New student name" style="max-width:220px;margin-top:14px"><button class="btn alt" id="addS">Add student</button></div>
+</div>
+<div class="panel"><h2>Insights</h2><div id="insights"></div></div>
+</section>
+
+<section id="teams" hidden>
+<div class="panel">
+<h2>Balanced project teams</h2>
+<p class="muted">Students are spread across teams so each team gets a mix of strengths, using the roster from Teacher insights.</p>
+<div class="row" style="justify-content:flex-start;gap:18px">
+<div><label for="size">Team size</label><select id="size"><option>3</option><option selected>4</option><option>5</option></select></div>
+<div><label for="focus">Project focus</label><select id="focus"><option value="tech">Technology</option><option value="art">Creative</option><option value="lead">Leadership</option></select></div>
+</div>
+<button class="btn" id="mk">Build teams</button>
+</div>
+<div class="grid" id="tout"></div>
+</section>
+
+<footer>EduSphere AI prototype. Sample data only. The suggestions use built-in rules; a live version would connect to an AI model and a secure database.<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-family:Newsreader,Georgia,serif;font-size:1.15rem;color:var(--brand);text-align:center">Designed by Sunny</div></footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+
+// Tabs
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function show(t){document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+['student','ask','teacher','teams'].forEach(id=>$('#'+id).hidden=id!==t);
+try{history.replaceState(null,'','#'+t)}catch(e){}if(t==='teacher')renderTeacher()}
+
+// ---------- Student ----------
+const OPPS=[
+{n:'National Science Olympiad',t:['science','math','coding'],d:'Registrations open through the school coordinator.'},
+{n:'Inter-school Coding Challenge',t:['coding','math','robotics'],d:'Team event, beginner level welcome.'},
+{n:'Debate and MUN Club',t:['speaking','writing','leadership'],d:'Weekly sessions; builds confidence in speaking up.'},
+{n:'Art and Design Fest',t:['art','design','writing'],d:'Poster, digital art and short film categories.'},
+{n:'Community Service Drive',t:['leadership','social','environment'],d:'Good for service hours and teamwork.'},
+{n:'Robotics Workshop',t:['robotics','coding','science'],d:'Hands-on build sessions on weekends.'},
+{n:'School Sports Trials',t:['sports','leadership'],d:'Trials for athletics, football and cricket.'},
+{n:'Young Entrepreneurs Pitch',t:['business','leadership','design'],d:'Pitch an idea to a panel of mentors.'}];
+const INT=[['coding','Coding'],['math','Maths'],['science','Science'],['robotics','Robotics'],['art','Art'],['design','Design'],['writing','Writing'],['speaking','Public speaking'],['leadership','Leadership'],['sports','Sports'],['business','Business'],['environment','Environment']];
+const sel=new Set(['coding','science']);
+$('#interests').innerHTML=INT.map(([k,l])=>`<button class="chip" data-k="${k}" aria-pressed="${sel.has(k)}">${l}</button>`).join('');
+$('#interests').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const k=b.dataset.k;sel.has(k)?sel.delete(k):sel.add(k);b.setAttribute('aria-pressed',sel.has(k))};
+$('#hours').oninput=e=>$('#hv').textContent=e.target.value;
+const TIPS={'Mathematics':['Solve 5 problems daily, then redo the ones you got wrong','Write each formula on one revision sheet','Ask your teacher for one worked example per chapter'],
+'Science':['Draw a labelled diagram for each concept','Link every topic to one everyday example','Do a 10-minute recall quiz before sleeping'],
+'English':['Read one short article a day and note 3 new words','Write 5 lines of summary after each reading','Practise one speaking minute on a random topic'],
+'Social Science':['Build timelines and maps for each chapter','Explain each chapter aloud in your own words','Practise 2 long answers each week'],
+'Computer Science':['Type out and run small programs every day','Debug your own errors before asking for help','Build one tiny project per topic']};
+$('#go').onclick=()=>{
+const name=$('#sname').value.trim()||'Student',w=$('#weak').value,h=+$('#hours').value;
+const ranked=OPPS.map(o=>({o,s:o.t.filter(x=>sel.has(x)).length})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,3);
+const wk=Math.max(1,Math.round(h*0.4*10)/10);
+$('#sout').innerHTML=`<h2>${esc(name)}’s plan</h2>
+<h3 style="margin-top:12px">Focus on ${esc(w)}</h3>
+<p class="muted">Spend about ${wk} of your ${h} daily hours here, and split the rest across other subjects.</p>
+<ul>${TIPS[w].map(t=>`<li>${t}</li>`).join('')}</ul>
+<h3 style="margin-top:16px">Opportunities for you</h3>
+${ranked.length?ranked.map(({o,s})=>`<div class="item"><b>${o.n}</b> <span class="tag">${s} interest match${s>1?'es':''}</span><div class="muted">${o.d}</div></div>`).join(''):'<p class="muted">Select at least one interest to see opportunities.</p>'}`};
+
+// ---------- Anonymous ----------
+const TOPICS={Mathematics:/math|equation|algebra|geometry|fraction|formula|trigon/i,Science:/science|chem|physics|bio|atom|cell|force|energy|reaction/i,English:/english|grammar|essay|poem|vocab/i,Computing:/code|coding|computer|python|program/i,Wellbeing:/stress|anxious|afraid|shy|bully|alone|pressure|scared|tired/i,Teaching:/speed|fast|slow|explain|repeat|understand|confus/i};
+let qs=load('es_q',[{t:'I didn’t understand how to balance chemical equations.',tags:['Science','Teaching'],v:4},{t:'Can we get more time to practise geometry proofs?',tags:['Mathematics'],v:2}]);
+function renderQ(){const l=[...qs].sort((a,b)=>b.v-a.v);$('#qlist').innerHTML=l.map((q,i)=>`<div class="item"><div>${esc(q.t)}</div><div class="row"><span>${q.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</span><button class="btn alt" style="margin:0;padding:4px 10px" data-i="${qs.indexOf(q)}" aria-label="Me too">Me too · ${q.v}</button></div></div>`).join('')||'<p class="muted">No questions yet.</p>'}
+$('#qlist').onclick=e=>{const b=e.target.closest('button');if(!b)return;qs[+b.dataset.i].v++;save('es_q',qs);renderQ()};
+$('#post').onclick=()=>{const t=$('#q').value.trim();if(t.length<5){$('#pmsg').textContent='Write at least a few words so your teacher can help.';return}
+const tags=Object.keys(TOPICS).filter(k=>TOPICS[k].test(t));qs.unshift({t,tags:tags.length?tags:['General'],v:1});save('es_q',qs);$('#q').value='';$('#pmsg').textContent='Posted. Nobody can see who asked.';renderQ()};
+renderQ();
+
+// ---------- Teacher ----------
+const SK=['tech','art','lead'];
+let R=load('es_r',[
+['Aarav',92,78,70,85,'tech'],['Diya',88,84,90,92,'lead'],['Kabir',61,55,48,50,'art'],['Meera',95,90,86,98,'tech'],
+['Rohan',72,60,58,66,'lead'],['Isha',84,88,76,80,'art'],['Vikram',58,42,40,45,'tech'],['Anaya',90,72,80,88,'art'],
+['Dev',77,66,62,70,'lead'],['Sana',81,93,84,86,'art'],['Arjun',69,50,55,60,'tech'],['Tara',86,80,72,90,'lead']
+].map(r=>({name:r[0],att:r[1],mark:r[2],eng:r[3],asg:r[4],sk:r[5]})));
+const risk=s=>Math.round(100-(s.att*.25+s.mark*.3+s.eng*.25+s.asg*.2));
+const lvl=r=>r>=40?['high','High']:r>=25?['med','Medium']:['low','Low'];
+function renderTeacher(){
+const cols=[['att','Attendance %'],['mark','Marks %'],['eng','Engagement %'],['asg','Assignments %']];
+$('#roster').innerHTML=`<tr><th>Student</th>${cols.map(c=>`<th>${c[1]}</th>`).join('')}<th>Risk</th></tr>`+R.map((s,i)=>{const r=risk(s),[c,l]=lvl(r);
+return `<tr><td>${esc(s.name)}</td>${cols.map(([k])=>`<td><input type="number" min="0" max="100" value="${s[k]}" data-i="${i}" data-k="${k}" style="width:70px;padding:4px" aria-label="${esc(s.name)} ${k}"></td>`).join('')}<td class="risk-${c}">${l} (${r})</td></tr>`}).join('');
+const avg=k=>Math.round(R.reduce((a,s)=>a+s[k],0)/R.length);
+$('#kAtt').textContent=avg('att')+'%';$('#kEng').textContent=avg('eng')+'%';
+const hi=R.filter(s=>risk(s)>=25);$('#kRisk').textContent=hi.length;
+const out=[];
+hi.sort((a,b)=>risk(b)-risk(a)).forEach(s=>{const why=[];if(s.att<70)why.push('low attendance');if(s.mark<60)why.push('low marks');if(s.eng<60)why.push('low participation');if(s.asg<65)why.push('missing assignments');
+out.push(`<div class="item"><b>${esc(s.name)}</b> <span class="risk-${lvl(risk(s))[0]}">${lvl(risk(s))[1]} risk</span><div class="muted">Signals: ${why.join(', ')||'several small dips'}. Suggest a one-to-one check-in and a peer study partner.</div></div>`)});
+const top=[...R].sort((a,b)=>b.eng-a.eng)[0];
+out.push(`<div class="item"><b>Strength to build on</b><div class="muted">${esc(top.name)} has the highest engagement (${top.eng}%). Consider pairing them as a peer helper.</div></div>`);
+$('#insights').innerHTML=out.join('')}
+$('#roster').onchange=e=>{const i=e.target.dataset.i;if(i==null)return;R[i][e.target.dataset.k]=Math.max(0,Math.min(100,+e.target.value||0));save('es_r',R);renderTeacher()};
+$('#addS').onclick=()=>{const n=$('#nn').value.trim();if(!n)return;R.push({name:n,att:80,mark:70,eng:70,asg:70,sk:SK[R.length%3]});$('#nn').value='';save('es_r',R);renderTeacher()};
+
+// ---------- Teams ----------
+$('#mk').onclick=()=>{
+const size=+$('#size').value,f=$('#focus').value,n=Math.max(1,Math.ceil(R.length/size));
+const score=s=>(s.mark+s.eng+s.asg)/3+(s.sk===f?15:0);
+const sorted=[...R].sort((a,b)=>score(b)-score(a)),T=Array.from({length:n},()=>[]);
+sorted.forEach((s,i)=>{const r=Math.floor(i/n),c=i%n;T[r%2?n-1-c:c].push(s)});
+const L={tech:'Technology',art:'Creative',lead:'Leadership'};
+$('#tout').innerHTML=T.map((t,i)=>{const a=Math.round(t.reduce((x,s)=>x+score(s),0)/t.length);
+return `<div class="panel"><h3>Team ${i+1}</h3><div class="muted">Strength score ${a}</div>${t.map(s=>`<div class="item row"><span>${esc(s.name)}</span><span class="tag">${L[s.sk]}</span></div>`).join('')}</div>`}).join('')};
+
+// deep link
+const h=location.hash.slice(1);if(['student','ask','teacher','teams'].includes(h))show(h);
+</script>
+</body>
+</html>
